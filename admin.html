@@ -194,6 +194,12 @@
             border: 1px solid #f5c6cb;
         }
 
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
         .client-group {
             margin-bottom: 20px;
             padding: 15px;
@@ -448,7 +454,7 @@ CHALLENGE ME?</textarea>
         <!-- Setup Tab -->
         <div class="tab-content" id="setup-tab">
             <div class="section">
-                <h2>FTP Setup Instructions</h2>
+                <h2>🚀 Setup & Usage Guide</h2>
                 <div class="instructions">
                     <h3>📁 Folder Structure</h3>
                     <p>Create the following folder structure on your FTP:</p>
@@ -481,33 +487,39 @@ CHALLENGE ME?</textarea>
                 </div>
 
                 <div class="instructions">
+                    <h3>✨ Auto-Save Feature</h3>
+                    <p style="background: #e8f5e9; padding: 15px; border-radius: 8px; border-left: 4px solid #4CAF50; margin-bottom: 20px;">
+                        <strong>Great news!</strong> Your admin panel now automatically saves changes to the server.
+                        Just click "Update & Save Changes" and your portfolio will be instantly updated!
+                    </p>
+                </div>
+
+                <div class="instructions">
                     <h3>🔧 How to Use</h3>
-                    <ol>
-                        <li>Upload all files to your FTP server</li>
-                        <li>Upload images to respective folders</li>
-                        <li>Access <code>yourdomain.com/admin.html</code></li>
-                        <li>Fill in all content fields</li>
-                        <li>Click "Generate JSON" to create the content file</li>
-                        <li>Save the JSON as <code>site-content.json</code> in the <code>/data/</code> folder</li>
-                        <li>Your portfolio at <code>yourdomain.com</code> will auto-update</li>
+                    <ol style="font-size: 15px; line-height: 1.8;">
+                        <li><strong>Start the server:</strong> Run <code>npm install</code> then <code>npm start</code></li>
+                        <li><strong>Edit content:</strong> Fill in all content fields in the tabs above</li>
+                        <li><strong>Upload images:</strong> Add your project and client images to the folders</li>
+                        <li><strong>Save changes:</strong> Click the green "💾 Update & Save Changes" button</li>
+                        <li><strong>View updates:</strong> Refresh your portfolio page to see changes instantly!</li>
                     </ol>
                 </div>
 
                 <div class="instructions">
-                    <h3>💡 Tips</h3>
-                    <ul>
-                        <li>Always backup your <code>site-content.json</code> before making changes</li>
-                        <li>Test locally first by opening files in your browser</li>
-                        <li>Use relative paths for images: <code>images/projects/project1.jpg</code></li>
-                        <li>SVG logos work best for crisp display at any size</li>
+                    <h3>💾 Backup & Deploy</h3>
+                    <ul style="font-size: 15px; line-height: 1.8;">
+                        <li>Use the "📥 Download Backup" button to save a JSON backup</li>
+                        <li>For production: Upload all files including <code>server.js</code> and <code>package.json</code></li>
+                        <li>Run <code>npm install && npm start</code> on your server</li>
                         <li>Client logos rotate automatically every 3-5 seconds</li>
                     </ul>
                 </div>
             </div>
         </div>
 
-        <button class="btn" onclick="generateJSON()">Generate JSON Content File</button>
-        <button class="btn btn-danger" onclick="loadExistingData()" style="margin-left: 10px;">Load Existing Data</button>
+        <button class="btn" onclick="generateJSON()" style="background: #4CAF50; font-size: 16px; padding: 14px 28px;">💾 Update & Save Changes</button>
+        <button class="btn btn-secondary" onclick="loadExistingData()" style="margin-left: 10px;">🔄 Load Existing Data</button>
+        <button class="btn btn-secondary" onclick="downloadJSON()" style="margin-left: 10px;">📥 Download Backup</button>
     </div>
 
     <script>
@@ -552,7 +564,11 @@ CHALLENGE ME?</textarea>
             div.innerHTML = `
                 <div class="list-item-content">
                     <input type="text" placeholder="Project Name" id="project-name-${projectId}">
-                    <input type="text" placeholder="Image path (e.g., images/projects/project1.jpg)" id="project-image-${projectId}">
+                    <input type="text" placeholder="Image path (e.g., images/projects/01.webp)" id="project-image-${projectId}">
+                    <textarea placeholder="Project Description" id="project-description-${projectId}" style="margin-top: 8px;"></textarea>
+                    <input type="text" placeholder="Technologies (comma-separated: React, Node.js, PostgreSQL)" id="project-technologies-${projectId}" style="margin-top: 8px;">
+                    <input type="text" placeholder="Roles (comma-separated: UI/UX Design, Frontend Development)" id="project-roles-${projectId}" style="margin-top: 8px;">
+                    <input type="text" placeholder="Project Link (optional)" id="project-link-${projectId}" style="margin-top: 8px;">
                 </div>
                 <button class="btn btn-danger" onclick="removeItem('project-${projectId}')">Remove</button>
             `;
@@ -656,8 +672,18 @@ CHALLENGE ME?</textarea>
                 const id = input.id.match(/project-name-(\d+)/)[1];
                 const name = input.value;
                 const image = document.getElementById('project-image-' + id).value;
+                const description = document.getElementById('project-description-' + id)?.value || '';
+                const technologiesStr = document.getElementById('project-technologies-' + id)?.value || '';
+                const rolesStr = document.getElementById('project-roles-' + id)?.value || '';
+                const link = document.getElementById('project-link-' + id)?.value || '';
+
                 if (name && image) {
-                    currentData.projects.push({ name, image });
+                    const project = { name, image };
+                    if (description) project.description = description;
+                    if (technologiesStr) project.technologies = technologiesStr.split(',').map(t => t.trim()).filter(t => t);
+                    if (rolesStr) project.roles = rolesStr.split(',').map(r => r.trim()).filter(r => r);
+                    if (link) project.link = link;
+                    currentData.projects.push(project);
                 }
             });
             
@@ -674,7 +700,38 @@ CHALLENGE ME?</textarea>
                 });
             }
             
-            // Generate and download JSON
+            // Save to server automatically
+            saveToServer(currentData);
+        }
+
+        // Save content to server
+        async function saveToServer(data) {
+            try {
+                showStatus('Saving changes...', 'info');
+
+                const response = await fetch('/api/save-content', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data, null, 2)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showStatus('✓ Changes saved successfully! Your portfolio is now up to date.', 'success');
+                } else {
+                    throw new Error(result.error || 'Failed to save');
+                }
+            } catch (error) {
+                console.error('Save error:', error);
+                showStatus('✗ Error saving changes: ' + error.message + '. Make sure the server is running.', 'error');
+            }
+        }
+
+        // Download JSON (backup option)
+        function downloadJSON() {
             const json = JSON.stringify(currentData, null, 2);
             const blob = new Blob([json], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
@@ -682,8 +739,8 @@ CHALLENGE ME?</textarea>
             a.href = url;
             a.download = 'site-content.json';
             a.click();
-            
-            showStatus('JSON file generated! Save it to /data/site-content.json on your FTP.', 'success');
+
+            showStatus('JSON file downloaded as backup!', 'success');
         }
 
         // Load existing data
@@ -737,9 +794,23 @@ CHALLENGE ME?</textarea>
                 projectsContainer.innerHTML = '';
                 data.projects.forEach(project => {
                     addProject();
-                    const inputs = projectsContainer.lastElementChild.querySelectorAll('input');
-                    inputs[0].value = project.name;
-                    inputs[1].value = project.image;
+                    const container = projectsContainer.lastElementChild;
+                    const projectId = container.id.replace('project-', '');
+
+                    document.getElementById('project-name-' + projectId).value = project.name || '';
+                    document.getElementById('project-image-' + projectId).value = project.image || '';
+                    if (document.getElementById('project-description-' + projectId)) {
+                        document.getElementById('project-description-' + projectId).value = project.description || '';
+                    }
+                    if (document.getElementById('project-technologies-' + projectId)) {
+                        document.getElementById('project-technologies-' + projectId).value = project.technologies ? project.technologies.join(', ') : '';
+                    }
+                    if (document.getElementById('project-roles-' + projectId)) {
+                        document.getElementById('project-roles-' + projectId).value = project.roles ? project.roles.join(', ') : '';
+                    }
+                    if (document.getElementById('project-link-' + projectId)) {
+                        document.getElementById('project-link-' + projectId).value = project.link || '';
+                    }
                 });
                 
                 // Load clients

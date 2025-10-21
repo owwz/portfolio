@@ -439,16 +439,21 @@
             left: auto;
             width: calc(100% - 642px);
             max-width: calc(2100px - 642px);
-            height: 120px;
+            height: 200px;
             pointer-events: none;
             z-index: 10;
-            isolation: isolate;
         }
 
-        .gradual-blur-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
+        .gradual-blur::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to bottom,
+                transparent 0%,
+                rgba(247, 246, 246, 0.8) 100%
+            );
+            z-index: 1;
         }
 
         .blur-layer {
@@ -1308,45 +1313,50 @@
             initializeGradualBlur();
         });
 
-        // Initialize gradual blur effect
+        // Initialize gradual blur effect (inspired by reactbits.dev)
         function initializeGradualBlur() {
             const blurContainer = document.getElementById('gradualBlur');
             if (!blurContainer) return;
 
-            const divCount = 6;
-            const blurInner = document.createElement('div');
-            blurInner.className = 'gradual-blur-inner';
+            // Clear any existing layers
+            blurContainer.innerHTML = '';
 
-            // Create blur layers with exponential progression
-            for (let i = 1; i <= divCount; i++) {
+            // Create 10 blur layers for ultra-smooth gradual effect
+            const layerCount = 10;
+
+            for (let i = 0; i < layerCount; i++) {
                 const layer = document.createElement('div');
                 layer.className = 'blur-layer';
-                
-                // Calculate blur strength exponentially
-                const progress = i / divCount;
-                const blurValue = Math.pow(2, progress * 3) * 0.5; // Exponential blur from 0 to ~4px
-                
-                // Calculate mask gradient positions
-                const increment = 100 / divCount;
-                const p1 = Math.round((increment * i - increment) * 10) / 10;
-                const p2 = Math.round(increment * i * 10) / 10;
-                const p3 = Math.round((increment * i + increment) * 10) / 10;
-                const p4 = Math.round((increment * i + increment * 2) * 10) / 10;
-                
-                let gradient = `transparent ${p1}%, black ${p2}%`;
-                if (p3 <= 100) gradient += `, black ${p3}%`;
-                if (p4 <= 100) gradient += `, transparent ${p4}%`;
-                
-                // Apply styles
-                layer.style.maskImage = `linear-gradient(to bottom, ${gradient})`;
-                layer.style.webkitMaskImage = `linear-gradient(to bottom, ${gradient})`;
-                layer.style.backdropFilter = `blur(${blurValue}px)`;
-                layer.style.webkitBackdropFilter = `blur(${blurValue}px)`;
-                
-                blurInner.appendChild(layer);
-            }
 
-            blurContainer.appendChild(blurInner);
+                // Calculate progressive blur amount (0px to 16px)
+                const blurAmount = (i + 1) * 1.6;
+
+                // Calculate mask position for this layer
+                // Each layer covers a portion of the height with smooth transitions
+                const step = 100 / layerCount;
+                const start = i * step;
+                const fadeStart = Math.max(0, start - step);
+                const fadeEnd = Math.min(100, start + step * 2);
+
+                // Create smooth mask gradient for seamless blending
+                const maskGradient = `linear-gradient(
+                    to bottom,
+                    transparent 0%,
+                    transparent ${fadeStart}%,
+                    black ${start}%,
+                    black ${start + step}%,
+                    transparent ${fadeEnd}%,
+                    transparent 100%
+                )`;
+
+                // Apply styles to layer
+                layer.style.backdropFilter = `blur(${blurAmount}px)`;
+                layer.style.webkitBackdropFilter = `blur(${blurAmount}px)`;
+                layer.style.maskImage = maskGradient;
+                layer.style.webkitMaskImage = maskGradient;
+
+                blurContainer.appendChild(layer);
+            }
         }
 
         // Cleanup on unload
