@@ -1411,82 +1411,131 @@
             });
         }
 
-        // Scrambled Text Animation (inspired by reactbits.dev)
-        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()';
+        // Scrambled Text Animation - Interactive Mouse Hover (exact reactbits.dev effect)
+        const scrambleChars = '.:';
+        const scrambleRadius = 100; // pixels
+        const scrambleDuration = 1200; // ms
+        const scrambleSpeed = 0.5;
 
-        function scrambleText(element, finalText, options = {}) {
-            const {
-                duration = 2000,
-                scrambleSpeed = 50,
-                delay = 0
-            } = options;
+        class ScrambledTextElement {
+            constructor(element, options = {}) {
+                this.element = element;
+                this.radius = options.radius || scrambleRadius;
+                this.duration = options.duration || scrambleDuration;
+                this.speed = options.speed || scrambleSpeed;
+                this.chars = options.scrambleChars || scrambleChars;
 
-            const totalFrames = Math.floor(duration / scrambleSpeed);
-            let frame = 0;
+                this.originalText = element.textContent;
+                this.charElements = [];
+                this.activeScrambles = new Map();
 
-            setTimeout(() => {
+                this.init();
+            }
+
+            init() {
+                // Split text into individual character spans
+                const chars = this.originalText.split('');
+                this.element.innerHTML = '';
+
+                chars.forEach((char, i) => {
+                    const span = document.createElement('span');
+                    span.textContent = char;
+                    span.style.display = 'inline-block';
+                    span.dataset.original = char;
+                    span.dataset.index = i;
+                    this.charElements.push(span);
+                    this.element.appendChild(span);
+                });
+
+                // Add mouse move listener
+                this.element.addEventListener('pointermove', this.handleMouseMove.bind(this));
+            }
+
+            handleMouseMove(e) {
+                const rect = this.element.getBoundingClientRect();
+
+                this.charElements.forEach(charEl => {
+                    const charRect = charEl.getBoundingClientRect();
+                    const charCenterX = charRect.left + charRect.width / 2;
+                    const charCenterY = charRect.top + charRect.height / 2;
+
+                    const dx = e.clientX - charCenterX;
+                    const dy = e.clientY - charCenterY;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < this.radius) {
+                        const distanceRatio = 1 - (distance / this.radius);
+                        const duration = this.duration * distanceRatio;
+                        this.scrambleChar(charEl, duration);
+                    }
+                });
+            }
+
+            scrambleChar(charEl, duration) {
+                const original = charEl.dataset.original;
+                const index = charEl.dataset.index;
+
+                // Clear existing scramble for this character
+                if (this.activeScrambles.has(index)) {
+                    clearInterval(this.activeScrambles.get(index).interval);
+                    clearTimeout(this.activeScrambles.get(index).timeout);
+                }
+
+                if (original === ' ') return; // Don't scramble spaces
+
+                const frameTime = 50; // ms per frame
+                const totalFrames = Math.floor(duration / frameTime);
+                let frame = 0;
+
                 const interval = setInterval(() => {
-                    let scrambledText = '';
-
-                    for (let i = 0; i < finalText.length; i++) {
-                        const progress = frame / totalFrames;
-                        const charProgress = (i / finalText.length);
-
-                        // Each character resolves based on overall progress
-                        if (progress > charProgress) {
-                            // Character is revealed
-                            scrambledText += finalText[i];
-                        } else if (finalText[i] === ' ') {
-                            // Keep spaces as spaces
-                            scrambledText += ' ';
-                        } else {
-                            // Still scrambling
-                            scrambledText += characters[Math.floor(Math.random() * characters.length)];
-                        }
+                    if (frame < totalFrames) {
+                        // Show random scramble character
+                        const randomChar = this.chars[Math.floor(Math.random() * this.chars.length)];
+                        charEl.textContent = randomChar;
+                        frame++;
                     }
+                }, frameTime * this.speed);
 
-                    element.textContent = scrambledText;
-                    frame++;
+                // Restore original after duration
+                const timeout = setTimeout(() => {
+                    charEl.textContent = original;
+                    clearInterval(interval);
+                    this.activeScrambles.delete(index);
+                }, duration);
 
-                    if (frame > totalFrames) {
-                        clearInterval(interval);
-                        element.textContent = finalText;
-                    }
-                }, scrambleSpeed);
-            }, delay);
-        }
+                this.activeScrambles.set(index, { interval, timeout });
+            }
 
-        function applyScrambleToElement(element, delay = 0) {
-            const originalText = element.textContent;
-            if (originalText && originalText.trim().length > 0) {
-                element.textContent = ''; // Start with empty
-                scrambleText(element, originalText, { delay });
+            destroy() {
+                this.activeScrambles.forEach(({ interval, timeout }) => {
+                    clearInterval(interval);
+                    clearTimeout(timeout);
+                });
+                this.element.textContent = this.originalText;
             }
         }
 
+        // Initialize scrambled text on all text elements
+        let scrambledElements = [];
+
         function initScrambleAnimations() {
-            // Scramble heading
-            const heading = document.getElementById('mainHeading');
-            if (heading) applyScrambleToElement(heading, 300);
+            const selectors = [
+                '#mainHeading',
+                '#mainDescription',
+                '#headerName',
+                '.accordion-title',
+                '.btn',
+                '.mindset-text p',
+                '#aboutContent p'
+            ];
 
-            // Scramble description
-            const description = document.getElementById('mainDescription');
-            if (description) applyScrambleToElement(description, 500);
-
-            // Scramble header name
-            const headerName = document.getElementById('headerName');
-            if (headerName) applyScrambleToElement(headerName, 0);
-
-            // Scramble accordion titles
-            const accordionTitles = document.querySelectorAll('.accordion-title');
-            accordionTitles.forEach((title, index) => {
-                applyScrambleToElement(title, 700 + (index * 100));
-            });
-
-            // Scramble button text
-            const buttons = document.querySelectorAll('.btn');
-            buttons.forEach((btn, index) => {
-                applyScrambleToElement(btn, 600 + (index * 100));
+            selectors.forEach(selector => {
+                const elements = document.querySelectorAll(selector);
+                elements.forEach(el => {
+                    if (el.textContent.trim().length > 0) {
+                        scrambledElements.push(new ScrambledTextElement(el));
+                    }
+                });
             });
         }
 
