@@ -1411,6 +1411,85 @@
             });
         }
 
+        // Scrambled Text Animation (inspired by reactbits.dev)
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()';
+
+        function scrambleText(element, finalText, options = {}) {
+            const {
+                duration = 2000,
+                scrambleSpeed = 50,
+                delay = 0
+            } = options;
+
+            const totalFrames = Math.floor(duration / scrambleSpeed);
+            let frame = 0;
+
+            setTimeout(() => {
+                const interval = setInterval(() => {
+                    let scrambledText = '';
+
+                    for (let i = 0; i < finalText.length; i++) {
+                        const progress = frame / totalFrames;
+                        const charProgress = (i / finalText.length);
+
+                        // Each character resolves based on overall progress
+                        if (progress > charProgress) {
+                            // Character is revealed
+                            scrambledText += finalText[i];
+                        } else if (finalText[i] === ' ') {
+                            // Keep spaces as spaces
+                            scrambledText += ' ';
+                        } else {
+                            // Still scrambling
+                            scrambledText += characters[Math.floor(Math.random() * characters.length)];
+                        }
+                    }
+
+                    element.textContent = scrambledText;
+                    frame++;
+
+                    if (frame > totalFrames) {
+                        clearInterval(interval);
+                        element.textContent = finalText;
+                    }
+                }, scrambleSpeed);
+            }, delay);
+        }
+
+        function applyScrambleToElement(element, delay = 0) {
+            const originalText = element.textContent;
+            if (originalText && originalText.trim().length > 0) {
+                element.textContent = ''; // Start with empty
+                scrambleText(element, originalText, { delay });
+            }
+        }
+
+        function initScrambleAnimations() {
+            // Scramble heading
+            const heading = document.getElementById('mainHeading');
+            if (heading) applyScrambleToElement(heading, 300);
+
+            // Scramble description
+            const description = document.getElementById('mainDescription');
+            if (description) applyScrambleToElement(description, 500);
+
+            // Scramble header name
+            const headerName = document.getElementById('headerName');
+            if (headerName) applyScrambleToElement(headerName, 0);
+
+            // Scramble accordion titles
+            const accordionTitles = document.querySelectorAll('.accordion-title');
+            accordionTitles.forEach((title, index) => {
+                applyScrambleToElement(title, 700 + (index * 100));
+            });
+
+            // Scramble button text
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach((btn, index) => {
+                applyScrambleToElement(btn, 600 + (index * 100));
+            });
+        }
+
         // Add scroll reveal to elements on load
         function addScrollRevealToElements() {
             // Add to main card
@@ -1435,6 +1514,11 @@
             // Delay scroll reveal slightly to let content load
             setTimeout(() => {
                 addScrollRevealToElements();
+
+                // Initialize scramble animations after content is loaded
+                setTimeout(() => {
+                    initScrambleAnimations();
+                }, 200);
             }, 100);
         });
 
