@@ -29,23 +29,91 @@
   "projects": [
     {
       "name": "Digital Banking Platform",
-      "image": "images/projects/banking-app.jpg"
+      "image": "images/projects/01.webp",
+      "description": "A comprehensive digital banking solution featuring real-time transactions, expense tracking, and AI-powered financial insights. Designed to make banking intuitive and accessible for modern users.",
+      "technologies": ["React", "Node.js", "PostgreSQL", "Plaid API", "Chart.js"],
+      "roles": ["UI/UX Design", "Frontend Development", "Design System"],
+      "link": "#"
     },
     {
       "name": "E-commerce Redesign",
-      "image": "images/projects/ecommerce.jpg"
+      "image": "images/projects/02.webp",
+      "description": "Complete redesign of a multi-vendor e-commerce platform focusing on improved user flow, conversion optimization, and mobile-first experience. Achieved 40% increase in conversion rates.",
+      "technologies": ["Next.js", "Tailwind CSS", "Shopify API", "Stripe"],
+      "roles": ["Product Design", "UX Research", "Frontend Development"],
+      "link": "#"
     },
     {
       "name": "Mobile Health App",
-      "image": "images/projects/health-app.jpg"
+      "image": "images/projects/03.webp",
+      "description": "Healthcare platform connecting patients with medical professionals through telemedicine. Features appointment scheduling, video consultations, and prescription management.",
+      "technologies": ["React Native", "Firebase", "WebRTC", "Socket.io"],
+      "roles": ["Mobile App Design", "User Research", "Prototyping"],
+      "link": "#"
     },
     {
       "name": "SaaS Dashboard",
-      "image": "images/projects/dashboard.jpg"
+      "image": "images/projects/04.webp",
+      "description": "Enterprise analytics dashboard providing real-time insights and data visualization for business intelligence. Designed for scalability and complex data interactions.",
+      "technologies": ["Vue.js", "D3.js", "Python", "Redis", "Elasticsearch"],
+      "roles": ["Dashboard Design", "Data Visualization", "Frontend Development"],
+      "link": "#"
     },
     {
       "name": "Brand Identity System",
-      "image": "images/projects/brand-identity.jpg"
+      "image": "images/projects/05.webp",
+      "description": "Comprehensive brand identity and design system for a fintech startup. Includes logo, color palette, typography, and component library used across all platforms.",
+      "technologies": ["Figma", "Adobe Creative Suite", "Storybook"],
+      "roles": ["Brand Design", "Design System", "Art Direction"],
+      "link": "#"
+    },
+    {
+      "name": "Portfolio & Branding",
+      "image": "images/projects/06.webp",
+      "description": "Personal portfolio website for a creative professional showcasing work through an interactive and visually engaging experience. Focus on storytelling and visual impact.",
+      "technologies": ["HTML5", "CSS3", "JavaScript", "GSAP", "Three.js"],
+      "roles": ["Web Design", "Frontend Development", "Creative Direction"],
+      "link": "#"
+    },
+    {
+      "name": "Enterprise CRM",
+      "image": "images/projects/07.webp",
+      "description": "Customer relationship management system designed for sales teams to manage leads, track interactions, and automate workflows. Increased team productivity by 35%.",
+      "technologies": ["Angular", "TypeScript", "MongoDB", "GraphQL"],
+      "roles": ["UX Design", "System Architecture", "Frontend Development"],
+      "link": "#"
+    },
+    {
+      "name": "Travel Booking App",
+      "image": "images/projects/08.webp",
+      "description": "Mobile-first travel booking platform featuring flight search, hotel reservations, and itinerary planning. Seamless booking experience across devices.",
+      "technologies": ["React Native", "Expo", "Amadeus API", "Mapbox"],
+      "roles": ["Mobile Design", "UX Research", "Prototyping"],
+      "link": "#"
+    },
+    {
+      "name": "Social Media Platform",
+      "image": "images/projects/09.webp",
+      "description": "Niche social network for creative professionals to share work, collaborate, and build community. Features real-time messaging and project collaboration tools.",
+      "technologies": ["React", "Redux", "WebSocket", "AWS", "S3"],
+      "roles": ["Product Design", "Frontend Development", "User Testing"],
+      "link": "#"
+    },
+    {
+      "name": "Food Delivery Service",
+      "image": "images/projects/10.webp",
+      "description": "Local food delivery platform connecting restaurants with customers. Real-time order tracking, driver management, and integrated payment processing.",
+      "technologies": ["Flutter", "Firebase", "Google Maps API", "Stripe"],
+      "roles": ["Mobile App Design", "UX Design", "Prototyping"],
+      "link": "#"
+    },
+    {
+      "name": "Fitness Tracking App",
+      "image": "images/projects/11.webp",
+      "description": "Fitness and wellness app with workout tracking, nutrition planning, and social features. Gamification elements to keep users motivated and engaged.",
+      "technologies": ["Swift", "HealthKit", "Core Data", "Firebase"],
+      "roles": ["iOS Design", "UX Design", "User Research"],
+      "link": "#"
     }
   ],
   "clients": [
@@ -105,5 +173,25 @@
         "logo": "images/clients/medicum.svg"
       }
     ]
-  ]
+  ],
+  "about": {
+    "image": "images/profile.svg",
+    "paragraphs": [
+      "I'm a designer and developer focused on creating intuitive digital experiences. With over a decade of experience, I've partnered with startups and established companies across fintech, healthcare, and e-commerce sectors.",
+      "My approach combines rapid prototyping with iterative refinement, ensuring solutions are both visually compelling and functionally robust. I believe the best products emerge from close collaboration and honest feedback.",
+      "When I'm not designing, you'll find me exploring new technologies, mentoring junior designers, or contributing to open-source projects."
+    ],
+    "skills": [
+      "UI/UX Design",
+      "Product Strategy",
+      "Frontend Development",
+      "Design Systems",
+      "User Research",
+      "Prototyping",
+      "Responsive Design",
+      "Accessibility",
+      "React & Next.js",
+      "Figma & Adobe XD"
+    ]
+  }
 }
