@@ -385,7 +385,7 @@
             align-items: center;
             gap: 8px;
             opacity: 0;
-            transition: opacity 0.8s ease-in-out;
+            transition: opacity 0.6s ease-in-out;
         }
 
         .logo-item.active {
@@ -398,14 +398,7 @@
             filter: grayscale(100%);
             opacity: 0.7;
             object-fit: contain;
-        }
-
-        .client-name {
-            font-size: 10px;
-            color: #666;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            white-space: nowrap;
+            transition: opacity 0.6s ease-in-out;
         }
 
         /* Mindset content */
@@ -1155,17 +1148,12 @@
                 logos.forEach((client, index) => {
                     const logoItem = document.createElement('div');
                     logoItem.className = 'logo-item' + (index === 0 ? ' active' : '');
-                    
+
                     const img = document.createElement('img');
                     img.src = client.logo;
                     img.alt = client.name;
-                    
-                    const name = document.createElement('span');
-                    name.className = 'client-name';
-                    name.textContent = client.name;
-                    
+
                     logoItem.appendChild(img);
-                    logoItem.appendChild(name);
                     wrapper.appendChild(logoItem);
                 });
                 
@@ -1409,12 +1397,8 @@
                 mainCard.dataset.revealDelay = 0;
             }
 
-            // Add to accordions
-            const accordions = document.querySelectorAll('.accordion');
-            accordions.forEach((accordion, index) => {
-                accordion.classList.add('scroll-reveal-fade');
-                accordion.dataset.revealDelay = index * 100; // Stagger by 100ms
-            });
+            // Note: Accordions removed from scroll reveal to fix opacity issue
+            // They are always visible on the left panel, so no scroll reveal needed
 
             // Initialize observer
             initScrollReveal();
