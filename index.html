@@ -78,6 +78,13 @@
             height: 100vh;
         }
 
+        /* Prevent word breaking in the middle */
+        p, .mindset-text, #aboutContent {
+            word-break: keep-all;
+            overflow-wrap: break-word;
+            hyphens: none;
+        }
+
         code, pre, .mono {
             font-family: 'Geist Mono', 'Courier New', monospace;
         }
@@ -126,18 +133,15 @@
         }
 
         .logo-circle {
-            width: 11px;
-            height: 11px;
+            height: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         .logo-circle svg {
-            width: 100%;
             height: 100%;
-            max-width: 11px;
-            max-height: 11px;
+            width: auto;
         }
 
         .logo-section {
@@ -455,7 +459,7 @@
             left: auto;
             width: calc(100% - 642px);
             max-width: calc(2100px - 642px);
-            height: 200px;
+            height: 150px;
             pointer-events: none;
             z-index: 10;
         }
@@ -931,7 +935,7 @@
         const defaultData = {
             "header": {
                 "name": "GEIO TISCHLER",
-                "logoSvg": "<svg width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='6' cy='6' r='5.5' fill='#000000'/></svg>"
+                "logoSvg": "<svg width='102' height='80' viewBox='0 0 102 80' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='102' height='80' fill='#000000'/></svg>"
             },
             "mainLogo": {
                 "svg": "<svg viewBox='0 0 60 60' fill='none' xmlns='http://www.w3.org/2000/svg'><text x='50%' y='50%' text-anchor='middle' dominant-baseline='middle' font-family='Arial' font-size='28' font-weight='bold' fill='white'>G</text></svg>"
