@@ -330,14 +330,21 @@
         /* About Me section */
         .about-content {
             display: flex;
-            flex-direction: column;
-            gap: 16px;
+            flex-direction: row;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .about-text {
+            flex: 1;
+            line-height: 1.6;
+            color: #444;
         }
 
         .about-image-container {
             width: 100px;
             height: 100px;
-            margin-bottom: 8px;
+            flex-shrink: 0;
         }
 
         .about-image {
@@ -346,11 +353,6 @@
             object-fit: cover;
             border-radius: 50%;
             filter: grayscale(100%);
-        }
-
-        .about-text {
-            line-height: 1.6;
-            color: #444;
         }
 
         .about-text p {
@@ -835,6 +837,28 @@
             </div>
 
             <div class="accordions-container">
+                <div class="accordion" onclick="toggleAccordion(this, 'about')">
+                    <div class="accordion-header">
+                        <span class="accordion-title">ABOUT ME</span>
+                        <div class="accordion-icon"></div>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-inner">
+                            <div class="about-content">
+                                <div class="about-text" id="aboutContent">
+                                    <p>A designer who bridges the gap between business goals and user needs, crafting digital experiences that are both beautiful and functional.</p>
+                                </div>
+                                <div class="about-image-container">
+                                    <img id="aboutImage" src="" alt="Profile" class="about-image">
+                                </div>
+                            </div>
+                            <div class="skills-container">
+                                <div class="skill-tag" id="skillTag">DIGITAL PRODUCT DESIGN</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="accordion" onclick="toggleAccordion(this, 'mindset')">
                     <div class="accordion-header">
                         <span class="accordion-title">MY MINDSET</span>
@@ -845,28 +869,6 @@
                             <div class="mindset-text" id="mindsetContent">
                                 <p>I cut out noise and unnecessary layers, moving fast with early prototypes and direct feedback. When things shift, I refine quickly to keep momentum steady. This approach keeps projects focused, lean, and moving in the right direction.</p>
                                 <p>Progress over process.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="accordion" onclick="toggleAccordion(this, 'about')">
-                    <div class="accordion-header">
-                        <span class="accordion-title">ABOUT ME</span>
-                        <div class="accordion-icon"></div>
-                    </div>
-                    <div class="accordion-content">
-                        <div class="accordion-inner">
-                            <div class="about-content">
-                                <div class="about-image-container">
-                                    <img id="aboutImage" src="" alt="Profile" class="about-image">
-                                </div>
-                                <div class="about-text" id="aboutContent">
-                                    <p>A designer who bridges the gap between business goals and user needs, crafting digital experiences that are both beautiful and functional.</p>
-                                </div>
-                                <div class="skills-container">
-                                    <div class="skill-tag" id="skillTag">DIGITAL PRODUCT DESIGN</div>
-                                </div>
                             </div>
                         </div>
                     </div>
