@@ -1199,10 +1199,7 @@
 
             siteData.projects.forEach((project, index) => {
                 const projectEl = document.createElement('div');
-                projectEl.className = 'project scroll-reveal';
-
-                // Add staggered delay for smooth sequential reveal
-                projectEl.dataset.revealDelay = index * 80; // 80ms between each project
+                projectEl.className = 'project';
 
                 const img = document.createElement('img');
                 img.src = project.image;
@@ -1214,12 +1211,6 @@
                 projectEl.appendChild(img);
                 container.appendChild(projectEl);
             });
-
-            // Re-initialize scroll observer for new projects
-            if (scrollObserver) {
-                const newProjects = document.querySelectorAll('.project.scroll-reveal');
-                newProjects.forEach(project => scrollObserver.observe(project));
-            }
         }
 
         // Open project modal
