@@ -1,0 +1,109 @@
+{
+  "header": {
+    "name": "GEIO TISCHLER",
+    "logoSvg": "<svg width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='6' cy='6' r='5.5' fill='#000000'/></svg>"
+  },
+  "mainLogo": {
+    "svg": "<svg viewBox='0 0 60 60' fill='none' xmlns='http://www.w3.org/2000/svg'><text x='50%' y='50%' text-anchor='middle' dominant-baseline='middle' font-family='Arial' font-size='28' font-weight='bold' fill='white'>G</text></svg>"
+  },
+  "content": {
+    "heading": "Helping you transform your rectangles into intuitive experiences.",
+    "description": "Partnering with companies to create elegant experiences that drive their and their clients' success."
+  },
+  "buttons": {
+    "primary": {
+      "text": "Send email",
+      "link": "mailto:hello@geiotischler.com"
+    },
+    "secondary": {
+      "text": "Chat in Messenger",
+      "link": "https://m.me/geiotischler"
+    }
+  },
+  "mindset": {
+    "paragraphs": [
+      "I cut out noise and unnecessary layers, moving fast with early prototypes and direct feedback. When things shift, I refine quickly to keep momentum steady. This approach keeps projects focused, lean, and moving in the right direction.",
+      "Progress over process."
+    ]
+  },
+  "projects": [
+    {
+      "name": "Digital Banking Platform",
+      "image": "images/projects/banking-app.jpg"
+    },
+    {
+      "name": "E-commerce Redesign",
+      "image": "images/projects/ecommerce.jpg"
+    },
+    {
+      "name": "Mobile Health App",
+      "image": "images/projects/health-app.jpg"
+    },
+    {
+      "name": "SaaS Dashboard",
+      "image": "images/projects/dashboard.jpg"
+    },
+    {
+      "name": "Brand Identity System",
+      "image": "images/projects/brand-identity.jpg"
+    }
+  ],
+  "clients": [
+    [
+      {
+        "name": "Holm Bank",
+        "logo": "images/clients/holm.svg"
+      },
+      {
+        "name": "Wise",
+        "logo": "images/clients/wise.svg"
+      },
+      {
+        "name": "Bolt",
+        "logo": "images/clients/bolt.svg"
+      }
+    ],
+    [
+      {
+        "name": "Telia",
+        "logo": "images/clients/telia.svg"
+      },
+      {
+        "name": "Elisa",
+        "logo": "images/clients/elisa.svg"
+      },
+      {
+        "name": "Tele2",
+        "logo": "images/clients/tele2.svg"
+      }
+    ],
+    [
+      {
+        "name": "Vapiano",
+        "logo": "images/clients/vapiano.svg"
+      },
+      {
+        "name": "Hesburger",
+        "logo": "images/clients/hesburger.svg"
+      },
+      {
+        "name": "Rimi",
+        "logo": "images/clients/rimi.svg"
+      }
+    ],
+    [
+      {
+        "name": "Confido",
+        "logo": "images/clients/confido.svg"
+      },
+      {
+        "name": "Synlab",
+        "logo": "images/clients/synlab.svg"
+      },
+      {
+        "name": "Medicum",
+        "logo": "images/clients/medicum.svg"
+      }
+    ]
+  ]
+}

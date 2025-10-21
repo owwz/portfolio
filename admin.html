@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Admin Panel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            padding: 40px;
+        }
+
+        h1 {
+            margin-bottom: 40px;
+            color: #333;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 20px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 20px;
+            background: #fafafa;
+            border-radius: 8px;
+        }
+
+        .section h2 {
+            margin-bottom: 20px;
+            color: #555;
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #666;
+        }
+
+        input[type="text"],
+        input[type="url"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="url"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .file-input-button {
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            border-radius: 4px;
+            display: inline-block;
+            transition: background 0.3s;
+        }
+
+        .file-input-button:hover {
+            background: #0056b3;
+        }
+
+        input[type="file"] {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .file-name {
+            display: inline-block;
+            margin-left: 10px;
+            color: #666;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background: #45a049;
+        }
+
+        .btn-danger {
+            background: #f44336;
+        }
+
+        .btn-danger:hover {
+            background: #da190b;
+        }
+
+        .btn-add {
+            background: #2196F3;
+            padding: 8px 16px;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .btn-add:hover {
+            background: #0b79d0;
+        }
+
+        .list-item {
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #e0e0e0;
+        }
+
+        .list-item-content {
+            flex: 1;
+        }
+
+        .list-item input {
+            margin-bottom: 5px;
+        }
+
+        .preview {
+            max-width: 100px;
+            max-height: 60px;
+            object-fit: contain;
+            margin-right: 15px;
+        }
+
+        .status {
+            padding: 10px;
+            margin: 20px 0;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .client-group {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 4px;
+        }
+
+        .client-group h3 {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .svg-input {
+            font-family: monospace;
+            font-size: 12px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            color: #666;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            color: #333;
+            border-bottom: 2px solid #4CAF50;
+            margin-bottom: -2px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .instructions {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border: 1px solid #ffeaa7;
+        }
+
+        .instructions h3 {
+            margin-bottom: 10px;
+            color: #856404;
+        }
+
+        .instructions ul {
+            margin-left: 20px;
+            color: #856404;
+        }
+
+        .instructions code {
+            background: #fff;
+            padding: 2px 4px;
+            border-radius: 2px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <h1>Portfolio Admin Panel</h1>
+        
+        <div class="status" id="status"></div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('content')">Content</button>
+            <button class="tab" onclick="switchTab('projects')">Projects</button>
+            <button class="tab" onclick="switchTab('clients')">Clients</button>
+            <button class="tab" onclick="switchTab('fonts')">Fonts</button>
+            <button class="tab" onclick="switchTab('setup')">Setup Instructions</button>
+        </div>
+
+        <!-- Content Tab -->
+        <div class="tab-content active" id="content-tab">
+            <div class="section">
+                <h2>Header</h2>
+                <div class="form-group">
+                    <label>Your Name</label>
+                    <input type="text" id="headerName" placeholder="GEIO TISCHLER">
+                </div>
+                <div class="form-group">
+                    <label>Header Logo SVG (small icon next to name)</label>
+                    <textarea class="svg-input" id="headerLogoSvg" placeholder="Paste SVG code here"></textarea>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Main Logo</h2>
+                <div class="form-group">
+                    <label>Main Logo SVG (large circle logo)</label>
+                    <textarea class="svg-input" id="mainLogoSvg" placeholder="Paste SVG code here"></textarea>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Main Content</h2>
+                <div class="form-group">
+                    <label>Heading</label>
+                    <input type="text" id="mainHeading" placeholder="Helping you transform...">
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="mainDescription" placeholder="Partnering with companies..."></textarea>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Buttons</h2>
+                <div class="form-group">
+                    <label>Primary Button Text</label>
+                    <input type="text" id="primaryBtnText" placeholder="Send email">
+                </div>
+                <div class="form-group">
+                    <label>Primary Button Link</label>
+                    <input type="url" id="primaryBtnLink" placeholder="mailto:hello@example.com">
+                </div>
+                <div class="form-group">
+                    <label>Secondary Button Text</label>
+                    <input type="text" id="secondaryBtnText" placeholder="Chat in Messenger">
+                </div>
+                <div class="form-group">
+                    <label>Secondary Button Link</label>
+                    <input type="url" id="secondaryBtnLink" placeholder="https://m.me/yourhandle">
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>My Mindset</h2>
+                <div id="mindsetParagraphs">
+                    <div class="form-group">
+                        <textarea class="mindset-para" placeholder="First paragraph...">I cut out noise and unnecessary layers, moving fast with early prototypes and direct feedback. When things shift, I refine quickly to keep momentum steady. This approach keeps projects focused, lean, and moving in the right direction.</textarea>
+                    </div>
+                    <div class="form-group">
+                        <textarea class="mindset-para" placeholder="Second paragraph...">Progress over process.</textarea>
+                    </div>
+                </div>
+                <button class="btn btn-add" onclick="addMindsetParagraph()">+ Add Paragraph</button>
+            </div>
+
+            <div class="section">
+                <h2>About Me</h2>
+                <div class="form-group">
+                    <label>Profile Image Path</label>
+                    <input type="text" id="aboutImage" placeholder="images/profile.jpg">
+                </div>
+                <div id="aboutParagraphs">
+                    <div class="form-group">
+                        <textarea class="about-para" placeholder="First paragraph...">A designer who bridges the gap between business goals and user needs, crafting digital experiences that are both beautiful and functional.</textarea>
+                    </div>
+                    <div class="form-group">
+                        <textarea class="about-para" placeholder="Second paragraph...">With over a decade of experience in digital design, I've helped startups and established companies alike transform their ideas into intuitive, user-centered products.</textarea>
+                    </div>
+                </div>
+                <button class="btn btn-add" onclick="addAboutParagraph()">+ Add Paragraph</button>
+                
+                <div class="form-group" style="margin-top: 20px;">
+                    <label>Skills (one per line, will rotate on site)</label>
+                    <textarea id="aboutSkills" rows="8" placeholder="Enter skills, one per line">DIGITAL PRODUCT DESIGN
+BRANDING
+WEB DESIGN
+PITCH DECKS
+MARKETING MATERIAL
+DESIGN SYSTEMS
+CHALLENGE ME?</textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Projects Tab -->
+        <div class="tab-content" id="projects-tab">
+            <div class="section">
+                <h2>Projects</h2>
+                <div class="instructions">
+                    <h3>📁 Image Upload Instructions</h3>
+                    <ul>
+                        <li>Upload project images to: <code>/images/projects/</code></li>
+                        <li>Recommended formats: WebP, JPG, PNG</li>
+                        <li>Recommended sizes: 800-1200px width</li>
+                        <li>Images will display at different heights (small/medium/large)</li>
+                    </ul>
+                </div>
+                <div id="projectsList"></div>
+                <button class="btn btn-add" onclick="addProject()">+ Add Project</button>
+            </div>
+        </div>
+
+        <!-- Clients Tab -->
+        <div class="tab-content" id="clients-tab">
+            <div class="section">
+                <h2>Client Logos</h2>
+                <div class="instructions">
+                    <h3>📁 Logo Upload Instructions</h3>
+                    <ul>
+                        <li>Upload client logos to: <code>/images/clients/</code></li>
+                        <li>Recommended format: SVG or PNG with transparency</li>
+                        <li>Recommended size: 200px width</li>
+                        <li>4 slots with rotating logos - add multiple per slot</li>
+                    </ul>
+                </div>
+                <div id="clientGroups"></div>
+            </div>
+        </div>
+
+        <!-- Fonts Tab -->
+        <div class="tab-content" id="fonts-tab">
+            <div class="section">
+                <h2>Custom Fonts</h2>
+                <div class="instructions">
+                    <h3>📁 Font Upload Instructions</h3>
+                    <ul>
+                        <li>Create a <code>/fonts/</code> folder in your root directory</li>
+                        <li>Upload your font files:
+                            <ul>
+                                <li><code>PPNeueMontreal-Book.woff</code></li>
+                                <li><code>PPNeueMontreal-Book.woff2</code> (optional, for better compression)</li>
+                                <li><code>PPNeueMontreal-Book.ttf</code> (fallback)</li>
+                            </ul>
+                        </li>
+                        <li>The site will automatically use PP Neue Montreal for all text except monospace headers</li>
+                        <li>Monospace text (headers/labels) uses Geist Mono</li>
+                    </ul>
+                </div>
+                
+                <div class="instructions" style="background: #d4edda; border-color: #c3e6cb;">
+                    <h3>✅ Current Font Setup</h3>
+                    <ul style="color: #155724;">
+                        <li><strong>Body Text:</strong> PP Neue Montreal Book</li>
+                        <li><strong>Headers (GEIO TISCHLER, MY MINDSET, CLIENTS):</strong> Geist Mono</li>
+                        <li><strong>Fallback:</strong> System fonts</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Setup Tab -->
+        <div class="tab-content" id="setup-tab">
+            <div class="section">
+                <h2>FTP Setup Instructions</h2>
+                <div class="instructions">
+                    <h3>📁 Folder Structure</h3>
+                    <p>Create the following folder structure on your FTP:</p>
+                    <ul>
+                        <li><code>/</code> (root)
+                            <ul>
+                                <li><code>index.html</code> - Main portfolio file</li>
+                                <li><code>admin.html</code> - This admin panel</li>
+                                <li><code>/data/</code>
+                                    <ul>
+                                        <li><code>site-content.json</code> - Generated content file</li>
+                                    </ul>
+                                </li>
+                                <li><code>/fonts/</code>
+                                    <ul>
+                                        <li><code>PPNeueMontreal-Book.woff</code></li>
+                                        <li><code>PPNeueMontreal-Book.woff2</code></li>
+                                        <li><code>PPNeueMontreal-Book.ttf</code></li>
+                                    </ul>
+                                </li>
+                                <li><code>/images/</code>
+                                    <ul>
+                                        <li><code>/projects/</code> - Project images</li>
+                                        <li><code>/clients/</code> - Client logos</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="instructions">
+                    <h3>🔧 How to Use</h3>
+                    <ol>
+                        <li>Upload all files to your FTP server</li>
+                        <li>Upload images to respective folders</li>
+                        <li>Access <code>yourdomain.com/admin.html</code></li>
+                        <li>Fill in all content fields</li>
+                        <li>Click "Generate JSON" to create the content file</li>
+                        <li>Save the JSON as <code>site-content.json</code> in the <code>/data/</code> folder</li>
+                        <li>Your portfolio at <code>yourdomain.com</code> will auto-update</li>
+                    </ol>
+                </div>
+
+                <div class="instructions">
+                    <h3>💡 Tips</h3>
+                    <ul>
+                        <li>Always backup your <code>site-content.json</code> before making changes</li>
+                        <li>Test locally first by opening files in your browser</li>
+                        <li>Use relative paths for images: <code>images/projects/project1.jpg</code></li>
+                        <li>SVG logos work best for crisp display at any size</li>
+                        <li>Client logos rotate automatically every 3-5 seconds</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn" onclick="generateJSON()">Generate JSON Content File</button>
+        <button class="btn btn-danger" onclick="loadExistingData()" style="margin-left: 10px;">Load Existing Data</button>
+    </div>
+
+    <script>
+        let currentData = {
+            header: { name: '', logoSvg: '' },
+            mainLogo: { svg: '' },
+            content: { heading: '', description: '' },
+            buttons: {
+                primary: { text: '', link: '' },
+                secondary: { text: '', link: '' }
+            },
+            mindset: { paragraphs: [] },
+            projects: [],
+            clients: [[], [], [], []] // 4 slots for rotating logos
+        };
+
+        // Switch tabs
+        function switchTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tab + '-tab').classList.add('active');
+        }
+
+        // Add mindset paragraph
+        function addMindsetParagraph() {
+            const container = document.getElementById('mindsetParagraphs');
+            const div = document.createElement('div');
+            div.className = 'form-group';
+            div.innerHTML = '<textarea class="mindset-para" placeholder="New paragraph..."></textarea>';
+            container.appendChild(div);
+        }
+
+        // Add project
+        function addProject() {
+            const container = document.getElementById('projectsList');
+            const projectId = Date.now();
+            const div = document.createElement('div');
+            div.className = 'list-item';
+            div.id = 'project-' + projectId;
+            div.innerHTML = `
+                <div class="list-item-content">
+                    <input type="text" placeholder="Project Name" id="project-name-${projectId}">
+                    <input type="text" placeholder="Image path (e.g., images/projects/project1.jpg)" id="project-image-${projectId}">
+                </div>
+                <button class="btn btn-danger" onclick="removeItem('project-${projectId}')">Remove</button>
+            `;
+            container.appendChild(div);
+        }
+
+        // Initialize client groups
+        function initializeClientGroups() {
+            const container = document.getElementById('clientGroups');
+            for (let i = 0; i < 4; i++) {
+                const group = document.createElement('div');
+                group.className = 'client-group';
+                group.innerHTML = `
+                    <h3>Slot ${i + 1} (Rotating Logos)</h3>
+                    <div id="clientSlot${i}"></div>
+                    <button class="btn btn-add" onclick="addClientToSlot(${i})">+ Add Logo</button>
+                `;
+                container.appendChild(group);
+            }
+        }
+
+        // Add client to slot
+        function addClientToSlot(slot) {
+            const container = document.getElementById('clientSlot' + slot);
+            const clientId = Date.now();
+            const div = document.createElement('div');
+            div.className = 'list-item';
+            div.id = 'client-' + slot + '-' + clientId;
+            div.innerHTML = `
+                <div class="list-item-content">
+                    <input type="text" placeholder="Client Name" id="client-name-${slot}-${clientId}">
+                    <input type="text" placeholder="Logo path (e.g., images/clients/logo.svg)" id="client-logo-${slot}-${clientId}">
+                </div>
+                <button class="btn btn-danger" onclick="removeItem('client-${slot}-${clientId}')">Remove</button>
+            `;
+            container.appendChild(div);
+        }
+
+        // Remove item
+        function removeItem(id) {
+            document.getElementById(id).remove();
+        }
+
+        // Add about paragraph
+        function addAboutParagraph() {
+            const container = document.getElementById('aboutParagraphs');
+            const div = document.createElement('div');
+            div.className = 'form-group';
+            div.innerHTML = '<textarea class="about-para" placeholder="New paragraph..."></textarea>';
+            container.appendChild(div);
+        }
+
+        // Generate JSON
+        function generateJSON() {
+            // Collect header data
+            currentData.header.name = document.getElementById('headerName').value;
+            currentData.header.logoSvg = document.getElementById('headerLogoSvg').value;
+            
+            // Collect main logo
+            currentData.mainLogo.svg = document.getElementById('mainLogoSvg').value;
+            
+            // Collect content
+            currentData.content.heading = document.getElementById('mainHeading').value;
+            currentData.content.description = document.getElementById('mainDescription').value;
+            
+            // Collect buttons
+            currentData.buttons.primary.text = document.getElementById('primaryBtnText').value;
+            currentData.buttons.primary.link = document.getElementById('primaryBtnLink').value;
+            currentData.buttons.secondary.text = document.getElementById('secondaryBtnText').value;
+            currentData.buttons.secondary.link = document.getElementById('secondaryBtnLink').value;
+            
+            // Collect mindset paragraphs
+            currentData.mindset.paragraphs = [];
+            document.querySelectorAll('.mindset-para').forEach(textarea => {
+                if (textarea.value) {
+                    currentData.mindset.paragraphs.push(textarea.value);
+                }
+            });
+            
+            // Collect about section
+            currentData.about = {
+                image: document.getElementById('aboutImage').value,
+                paragraphs: [],
+                skills: []
+            };
+            
+            document.querySelectorAll('.about-para').forEach(textarea => {
+                if (textarea.value) {
+                    currentData.about.paragraphs.push(textarea.value);
+                }
+            });
+            
+            const skillsText = document.getElementById('aboutSkills').value;
+            if (skillsText) {
+                currentData.about.skills = skillsText.split('\n').filter(skill => skill.trim());
+            }
+            
+            // Collect projects
+            currentData.projects = [];
+            document.querySelectorAll('[id^="project-"][id*="-name-"]').forEach(input => {
+                const id = input.id.match(/project-name-(\d+)/)[1];
+                const name = input.value;
+                const image = document.getElementById('project-image-' + id).value;
+                if (name && image) {
+                    currentData.projects.push({ name, image });
+                }
+            });
+            
+            // Collect clients
+            currentData.clients = [[], [], [], []];
+            for (let slot = 0; slot < 4; slot++) {
+                document.querySelectorAll(`[id^="client-name-${slot}-"]`).forEach(input => {
+                    const id = input.id.match(/client-name-\d+-(\d+)/)[1];
+                    const name = input.value;
+                    const logo = document.getElementById(`client-logo-${slot}-${id}`).value;
+                    if (name && logo) {
+                        currentData.clients[slot].push({ name, logo });
+                    }
+                });
+            }
+            
+            // Generate and download JSON
+            const json = JSON.stringify(currentData, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'site-content.json';
+            a.click();
+            
+            showStatus('JSON file generated! Save it to /data/site-content.json on your FTP.', 'success');
+        }
+
+        // Load existing data
+        async function loadExistingData() {
+            try {
+                const response = await fetch('data/site-content.json');
+                const data = await response.json();
+                currentData = data;
+                
+                // Populate fields
+                document.getElementById('headerName').value = data.header.name || '';
+                document.getElementById('headerLogoSvg').value = data.header.logoSvg || '';
+                document.getElementById('mainLogoSvg').value = data.mainLogo.svg || '';
+                document.getElementById('mainHeading').value = data.content.heading || '';
+                document.getElementById('mainDescription').value = data.content.description || '';
+                document.getElementById('primaryBtnText').value = data.buttons.primary.text || '';
+                document.getElementById('primaryBtnLink').value = data.buttons.primary.link || '';
+                document.getElementById('secondaryBtnText').value = data.buttons.secondary.text || '';
+                document.getElementById('secondaryBtnLink').value = data.buttons.secondary.link || '';
+                
+                // Load mindset paragraphs
+                const mindsetContainer = document.getElementById('mindsetParagraphs');
+                mindsetContainer.innerHTML = '';
+                data.mindset.paragraphs.forEach(para => {
+                    const div = document.createElement('div');
+                    div.className = 'form-group';
+                    div.innerHTML = `<textarea class="mindset-para">${para}</textarea>`;
+                    mindsetContainer.appendChild(div);
+                });
+                
+                // Load about section
+                if (data.about) {
+                    document.getElementById('aboutImage').value = data.about.image || '';
+                    
+                    const aboutContainer = document.getElementById('aboutParagraphs');
+                    aboutContainer.innerHTML = '';
+                    data.about.paragraphs.forEach(para => {
+                        const div = document.createElement('div');
+                        div.className = 'form-group';
+                        div.innerHTML = `<textarea class="about-para">${para}</textarea>`;
+                        aboutContainer.appendChild(div);
+                    });
+                    
+                    if (data.about.skills) {
+                        document.getElementById('aboutSkills').value = data.about.skills.join('\n');
+                    }
+                }
+                
+                // Load projects
+                const projectsContainer = document.getElementById('projectsList');
+                projectsContainer.innerHTML = '';
+                data.projects.forEach(project => {
+                    addProject();
+                    const inputs = projectsContainer.lastElementChild.querySelectorAll('input');
+                    inputs[0].value = project.name;
+                    inputs[1].value = project.image;
+                });
+                
+                // Load clients
+                data.clients.forEach((slotClients, slot) => {
+                    const container = document.getElementById('clientSlot' + slot);
+                    container.innerHTML = '';
+                    slotClients.forEach(client => {
+                        addClientToSlot(slot);
+                        const inputs = container.lastElementChild.querySelectorAll('input');
+                        inputs[0].value = client.name;
+                        inputs[1].value = client.logo;
+                    });
+                });
+                
+                showStatus('Data loaded successfully!', 'success');
+            } catch (error) {
+                showStatus('Error loading data. Make sure site-content.json exists.', 'error');
+            }
+        }
+
+        // Show status message
+        function showStatus(message, type) {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = 'status ' + type;
+            status.style.display = 'block';
+            setTimeout(() => {
+                status.style.display = 'none';
+            }, 5000);
+        }
+
+        // Initialize on load
+        window.addEventListener('load', () => {
+            initializeClientGroups();
+        });
+    </script>
+</body>
+</html>

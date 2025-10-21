@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GEIO TISCHLER - Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+        
+        @font-face {
+            font-family: 'PP Neue Montreal';
+            src: url('fonts/PPNeueMontreal-Book.woff2') format('woff2'),
+                 url('fonts/PPNeueMontreal-Book.woff') format('woff'),
+                 url('fonts/PPNeueMontreal-Book.ttf') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+        }
+        
+        body {
+            font-family: 'PP Neue Montreal', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f7f6f6;
+            color: #1f1f1f;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+            gap: 4px;
+            padding: 4px;
+            background: #f7f6f6;
+            max-width: 2100px;
+            margin: 0 auto;
+        }
+
+        /* Left Panel */
+        .left-panel {
+            width: 638px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            height: calc(100vh - 8px);
+            justify-content: space-between;
+        }
+
+        .main-card {
+            background: white;
+            border-radius: 24px;
+            padding: 48px;
+            display: flex;
+            flex-direction: column;
+            flex: 1 1 auto;
+            min-height: 300px;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+            letter-spacing: 0.48px;
+            font-family: 'Geist Mono', 'SF Mono', 'Monaco', monospace;
+            font-weight: 400;
+            flex-shrink: 0;
+            margin-bottom: auto;
+        }
+
+        .logo-circle {
+            width: 11px;
+            height: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-circle svg {
+            width: 100%;
+            height: 100%;
+            max-width: 11px;
+            max-height: 11px;
+        }
+
+        .logo-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            margin-bottom: 16px;
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            background: #000;
+            border-radius: 50%;
+            position: relative;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo svg {
+            width: 40px;
+            height: 40px;
+            fill: white;
+        }
+
+        .content h1 {
+            font-size: 24px;
+            line-height: 1.2;
+            letter-spacing: -0.04em;
+            margin-bottom: 8px;
+            font-weight: 400;
+            max-width: 352px;
+        }
+
+        .content p {
+            font-size: 14px;
+            line-height: 1.4;
+            letter-spacing: -0.01em;
+            color: #666;
+            max-width: 352px;
+            margin-bottom: 24px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border-radius: 80px;
+            font-size: 14px;
+            letter-spacing: -0.01em;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            font-family: inherit;
+            white-space: nowrap;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #000;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #333;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #000;
+            border: 1.5px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-secondary:hover {
+            background: #f5f5f5;
+            transform: translateY(-1px);
+        }
+
+        /* Accordion */
+        .accordions-container {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+
+        .accordion {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .accordion:first-of-type {
+            justify-content: flex-end;
+        }
+
+        .accordion:last-of-type {
+            justify-content: flex-start;
+        }
+
+        .accordion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 34px 48px;
+            user-select: none;
+            min-height: 89px;
+        }
+
+        .accordion-title {
+            font-size: 12px;
+            letter-spacing: 0.48px;
+            font-family: 'Geist Mono', 'SF Mono', 'Monaco', monospace;
+            font-weight: 400;
+        }
+
+        .accordion-icon {
+            width: 11px;
+            height: 11px;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .accordion-icon::before,
+        .accordion-icon::after {
+            content: '';
+            position: absolute;
+            background: #000;
+            transition: all 0.3s ease;
+        }
+
+        .accordion-icon::before {
+            width: 100%;
+            height: 1.5px;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+        }
+
+        .accordion-icon::after {
+            width: 1.5px;
+            height: 100%;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .accordion.expanded .accordion-icon {
+            transform: rotate(45deg);
+        }
+
+        .accordion-content {
+            padding: 0 48px;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .accordion.expanded .accordion-content {
+            padding: 0 48px 34px;
+        }
+
+        .accordion-inner {
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease 0.2s;
+        }
+
+        .accordion.expanded .accordion-inner {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* About Me section */
+        .about-content {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .about-image-container {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 8px;
+        }
+
+        .about-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            filter: grayscale(100%);
+        }
+
+        .about-text {
+            line-height: 1.6;
+            color: #444;
+        }
+
+        .about-text p {
+            margin-bottom: 16px;
+        }
+
+        .about-text p:last-child {
+            margin-bottom: 0;
+        }
+
+        .skills-container {
+            margin-top: 8px;
+        }
+
+        .skill-tag {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #000;
+            color: #fff;
+            font-size: 11px;
+            font-family: 'Geist Mono', 'SF Mono', 'Monaco', monospace;
+            letter-spacing: 0.48px;
+            text-transform: uppercase;
+            border-radius: 20px;
+            transition: opacity 0.5s ease;
+        }
+
+        /* Client logos */
+        .clients-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-top: 8px;
+            height: 120px;
+        }
+
+        .client-logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            position: relative;
+        }
+
+        .logo-wrapper {
+            position: relative;
+            height: 40px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-item {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+        }
+
+        .logo-item.active {
+            opacity: 1;
+        }
+
+        .client-logo img {
+            max-height: 30px;
+            max-width: 100px;
+            filter: grayscale(100%);
+            opacity: 0.7;
+            object-fit: contain;
+        }
+
+        .client-name {
+            font-size: 10px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        /* Mindset content */
+        .mindset-text {
+            line-height: 1.6;
+            color: #444;
+        }
+
+        .mindset-text p {
+            margin-bottom: 16px;
+        }
+
+        .mindset-text p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Right Panel - Projects */
+        .right-panel {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-right: 4px;
+            scroll-behavior: smooth;
+            position: relative;
+        }
+
+        .gradual-blur {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            left: auto;
+            width: calc(100% - 642px);
+            max-width: calc(2100px - 642px);
+            height: 120px;
+            pointer-events: none;
+            z-index: 10;
+            isolation: isolate;
+        }
+
+        .gradual-blur-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .blur-layer {
+            position: absolute;
+            inset: 0;
+            backdrop-filter: blur(0);
+            -webkit-backdrop-filter: blur(0);
+        }
+
+        @media (min-width: 2100px) {
+            .gradual-blur {
+                width: 1458px;
+                left: 50%;
+                transform: translateX(calc(-50% + 321px));
+            }
+        }
+
+        .right-panel::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .right-panel::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .right-panel::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 3px;
+        }
+
+        .right-panel::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .projects-container {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding-bottom: 100px; /* Add padding to ensure last project is visible above blur */
+        }
+
+        .project {
+            border-radius: 24px;
+            overflow: hidden;
+            background: #f0f0f0;
+            position: relative;
+            animation: fadeInUp 0.6s ease forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .project:nth-child(1) { animation-delay: 0.1s; }
+        .project:nth-child(2) { animation-delay: 0.2s; }
+        .project:nth-child(3) { animation-delay: 0.3s; }
+        .project:nth-child(4) { animation-delay: 0.4s; }
+        .project:nth-child(5) { animation-delay: 0.5s; }
+        .project:nth-child(6) { animation-delay: 0.6s; }
+        .project:nth-child(7) { animation-delay: 0.7s; }
+        .project:nth-child(8) { animation-delay: 0.8s; }
+        .project:nth-child(9) { animation-delay: 0.9s; }
+        .project:nth-child(10) { animation-delay: 1.0s; }
+
+        .project img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Loading state */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: #f7f6f6;
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .left-panel {
+                width: 500px;
+            }
+            
+            .gradual-blur {
+                width: calc(100% - 504px);
+            }
+        }
+
+        @media (max-width: 1024px) {
+            body {
+                overflow: auto;
+                height: auto;
+            }
+
+            .container {
+                flex-direction: column;
+                height: auto;
+                max-width: 100%;
+                padding: 0;
+                gap: 0;
+            }
+            
+            .left-panel {
+                width: 100%;
+                height: auto;
+                flex-shrink: 0;
+                position: relative;
+                justify-content: flex-start;
+                gap: 0;
+                padding: 4px;
+            }
+
+            .main-card {
+                min-height: auto;
+                margin-bottom: 4px;
+            }
+
+            .accordions-container {
+                gap: 4px;
+                margin-bottom: 4px;
+            }
+
+            .right-panel {
+                height: auto;
+                padding: 0 4px 4px 4px;
+                overflow-y: visible;
+                position: relative;
+            }
+            
+            .gradual-blur {
+                display: none; /* Hide blur on mobile since everything scrolls */
+            }
+
+            .projects-container {
+                gap: 4px;
+                padding-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="loading" class="loading">Loading portfolio...</div>
+    
+    <div class="container" style="display: none;">
+        <div class="left-panel">
+            <div class="main-card">
+                <div class="header">
+                    <div class="logo-circle" id="headerLogo"></div>
+                    <span id="headerName">GEIO TISCHLER</span>
+                </div>
+                
+                <div class="logo-section">
+                    <div class="logo" id="mainLogo"></div>
+                    <div class="content">
+                        <h1 id="mainHeading">Helping you transform your rectangles into intuitive experiences.</h1>
+                        <p id="mainDescription">Partnering with companies to create elegant experiences that drive their and their clients' success.</p>
+                        <div class="buttons">
+                            <a class="btn btn-primary" id="primaryBtn" href="#">Send email</a>
+                            <a class="btn btn-secondary" id="secondaryBtn" href="#">Chat in Messenger</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordions-container">
+                <div class="accordion" onclick="toggleAccordion(this, 'mindset')">
+                    <div class="accordion-header">
+                        <span class="accordion-title">MY MINDSET</span>
+                        <div class="accordion-icon"></div>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-inner">
+                            <div class="mindset-text" id="mindsetContent">
+                                <p>I cut out noise and unnecessary layers, moving fast with early prototypes and direct feedback. When things shift, I refine quickly to keep momentum steady. This approach keeps projects focused, lean, and moving in the right direction.</p>
+                                <p>Progress over process.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion" onclick="toggleAccordion(this, 'about')">
+                    <div class="accordion-header">
+                        <span class="accordion-title">ABOUT ME</span>
+                        <div class="accordion-icon"></div>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-inner">
+                            <div class="about-content">
+                                <div class="about-image-container">
+                                    <img id="aboutImage" src="" alt="Profile" class="about-image">
+                                </div>
+                                <div class="about-text" id="aboutContent">
+                                    <p>A designer who bridges the gap between business goals and user needs, crafting digital experiences that are both beautiful and functional.</p>
+                                </div>
+                                <div class="skills-container">
+                                    <div class="skill-tag" id="skillTag">DIGITAL PRODUCT DESIGN</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion" onclick="toggleAccordion(this, 'clients')">
+                    <div class="accordion-header">
+                        <span class="accordion-title">CLIENTS</span>
+                        <div class="accordion-icon"></div>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-inner">
+                            <div class="clients-grid" id="clientsGrid">
+                                <!-- Client logos will be dynamically loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <div class="projects-container" id="projectsContainer">
+                <!-- Projects will be dynamically loaded here -->
+            </div>
+            <div class="gradual-blur" id="gradualBlur"></div>
+        </div>
+    </div>
+
+    <script>
+        let activeAccordion = null;
+        let siteData = null;
+        let clientRotationIntervals = [];
+        let skillRotationInterval = null;
+        let currentSkillIndex = 0;
+
+        // Default data matching your actual content
+        const defaultData = {
+            "header": {
+                "name": "GEIO TISCHLER",
+                "logoSvg": "<svg width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='6' cy='6' r='5.5' fill='#000000'/></svg>"
+            },
+            "mainLogo": {
+                "svg": "<svg viewBox='0 0 60 60' fill='none' xmlns='http://www.w3.org/2000/svg'><text x='50%' y='50%' text-anchor='middle' dominant-baseline='middle' font-family='Arial' font-size='28' font-weight='bold' fill='white'>G</text></svg>"
+            },
+            "content": {
+                "heading": "Helping you transform your rectangles into intuitive experiences.",
+                "description": "Partnering with companies to create elegant experiences that drive their and their clients' success."
+            },
+            "buttons": {
+                "primary": {
+                    "text": "Send email",
+                    "link": "mailto:hello@geiotischler.com"
+                },
+                "secondary": {
+                    "text": "Chat in Messenger",
+                    "link": "https://m.me/geiotischler"
+                }
+            },
+            "mindset": {
+                "paragraphs": [
+                    "I cut out noise and unnecessary layers, moving fast with early prototypes and direct feedback. When things shift, I refine quickly to keep momentum steady. This approach keeps projects focused, lean, and moving in the right direction.",
+                    "Progress over process."
+                ]
+            },
+            "about": {
+                "image": "images/profile.jpg",
+                "paragraphs": [
+                    "A designer who bridges the gap between business goals and user needs, crafting digital experiences that are both beautiful and functional.",
+                    "With over a decade of experience in digital design, I've helped startups and established companies alike transform their ideas into intuitive, user-centered products."
+                ],
+                "skills": [
+                    "DIGITAL PRODUCT DESIGN",
+                    "BRANDING",
+                    "WEB DESIGN",
+                    "PITCH DECKS",
+                    "MARKETING MATERIAL",
+                    "DESIGN SYSTEMS",
+                    "CHALLENGE ME?"
+                ]
+            },
+            "projects": [
+                {"name": "Project 01", "image": "images/projects/01.webp"},
+                {"name": "Project 02", "image": "images/projects/02.webp"},
+                {"name": "Project 03", "image": "images/projects/03.webp"},
+                {"name": "Project 04", "image": "images/projects/04.webp"},
+                {"name": "Project 05", "image": "images/projects/05.webp"},
+                {"name": "Project 06", "image": "images/projects/06.webp"},
+                {"name": "Project 07", "image": "images/projects/07.webp"},
+                {"name": "Project 08", "image": "images/projects/08.webp"},
+                {"name": "Project 09", "image": "images/projects/09.webp"},
+                {"name": "Project 10", "image": "images/projects/10.webp"},
+                {"name": "Project 11", "image": "images/projects/11.webp"}
+            ],
+            "clients": [
+                [
+                    {"name": "Client 01", "logo": "images/clients/01.svg"},
+                    {"name": "Client 02", "logo": "images/clients/02.svg"}
+                ],
+                [
+                    {"name": "Client 03", "logo": "images/clients/03.svg"},
+                    {"name": "Client 04", "logo": "images/clients/04.svg"}
+                ],
+                [
+                    {"name": "Client 05", "logo": "images/clients/05.svg"},
+                    {"name": "Client 06", "logo": "images/clients/06.svg"}
+                ],
+                [
+                    {"name": "Client 07", "logo": "images/clients/07.svg"},
+                    {"name": "Client 08", "logo": "images/clients/08.svg"},
+                    {"name": "Client 09", "logo": "images/clients/09.svg"}
+                ]
+            ]
+        };
+
+        // Load site data
+        async function loadSiteData() {
+            try {
+                const response = await fetch('data/site-content.json?t=' + Date.now());
+                
+                // Check if response is OK
+                if (!response.ok) {
+                    throw new Error('File not found');
+                }
+                
+                // Check content type
+                const contentType = response.headers.get("content-type");
+                const responseText = await response.text();
+                
+                // Check if it's an HTML error page
+                if (responseText.includes('<!DOCTYPE') || responseText.includes('<html')) {
+                    throw new Error('JSON file not found - using default data');
+                }
+                
+                // Try to parse JSON
+                try {
+                    siteData = JSON.parse(responseText);
+                    console.log('Loaded custom content from site-content.json');
+                } catch (parseError) {
+                    console.error('Invalid JSON in site-content.json:', parseError);
+                    siteData = defaultData;
+                }
+                
+                initializeSite();
+            } catch (error) {
+                console.log('Note:', error.message);
+                console.log('Using default content. Visit /admin.html to customize.');
+                
+                // Use default data
+                siteData = defaultData;
+                initializeSite();
+                
+                // Show a subtle notification only if not already customized
+                if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+                    const notification = document.createElement('div');
+                    notification.style.cssText = `
+                        position: fixed;
+                        bottom: 20px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        background: #333;
+                        color: white;
+                        padding: 12px 20px;
+                        border-radius: 8px;
+                        font-size: 14px;
+                        z-index: 1000;
+                        opacity: 0.9;
+                    `;
+                    notification.textContent = 'Using default content. Visit /admin.html to customize.';
+                    document.body.appendChild(notification);
+                    
+                    setTimeout(() => {
+                        notification.style.transition = 'opacity 0.5s';
+                        notification.style.opacity = '0';
+                        setTimeout(() => notification.remove(), 500);
+                    }, 5000);
+                }
+            }
+        }
+
+        // Initialize site with loaded data
+        function initializeSite() {
+            // Set header
+            document.getElementById('headerName').textContent = siteData.header.name;
+            if (siteData.header.logoSvg) {
+                document.getElementById('headerLogo').innerHTML = siteData.header.logoSvg;
+            }
+
+            // Set main logo
+            if (siteData.mainLogo.svg) {
+                document.getElementById('mainLogo').innerHTML = siteData.mainLogo.svg;
+            }
+
+            // Set content
+            document.getElementById('mainHeading').textContent = siteData.content.heading;
+            document.getElementById('mainDescription').textContent = siteData.content.description;
+            
+            // Set buttons
+            document.getElementById('primaryBtn').textContent = siteData.buttons.primary.text;
+            document.getElementById('primaryBtn').href = siteData.buttons.primary.link;
+            document.getElementById('secondaryBtn').textContent = siteData.buttons.secondary.text;
+            document.getElementById('secondaryBtn').href = siteData.buttons.secondary.link;
+
+            // Set mindset content
+            const mindsetHtml = siteData.mindset.paragraphs.map(p => `<p>${p}</p>`).join('');
+            document.getElementById('mindsetContent').innerHTML = mindsetHtml;
+
+            // Set about content
+            if (siteData.about) {
+                if (siteData.about.image) {
+                    document.getElementById('aboutImage').src = siteData.about.image;
+                }
+                const aboutHtml = siteData.about.paragraphs.map(p => `<p>${p}</p>`).join('');
+                document.getElementById('aboutContent').innerHTML = aboutHtml;
+                
+                // Start skill rotation
+                if (siteData.about.skills && siteData.about.skills.length > 0) {
+                    startSkillRotation(siteData.about.skills);
+                }
+            }
+
+            // Load clients with rotation
+            loadClients();
+
+            // Load projects
+            loadProjects();
+
+            // Show content
+            document.getElementById('loading').style.display = 'none';
+            document.querySelector('.container').style.display = 'flex';
+        }
+
+        // Start skill rotation
+        function startSkillRotation(skills) {
+            const skillTag = document.getElementById('skillTag');
+            if (!skillTag || skills.length === 0) return;
+            
+            // Set initial skill
+            skillTag.textContent = skills[0];
+            currentSkillIndex = 0;
+            
+            // Clear any existing interval
+            if (skillRotationInterval) {
+                clearInterval(skillRotationInterval);
+            }
+            
+            // Start rotation
+            skillRotationInterval = setInterval(() => {
+                // Fade out
+                skillTag.style.opacity = '0';
+                
+                setTimeout(() => {
+                    // Change skill
+                    currentSkillIndex = (currentSkillIndex + 1) % skills.length;
+                    skillTag.textContent = skills[currentSkillIndex];
+                    
+                    // Fade in
+                    skillTag.style.opacity = '1';
+                }, 250);
+            }, 3500); // Change every 3.5 seconds
+        }
+
+        // Load clients with rotation animation
+        function loadClients() {
+            const clientsGrid = document.getElementById('clientsGrid');
+            const clientGroups = siteData.clients;
+            
+            // Create 4 client slots
+            for (let i = 0; i < 4; i++) {
+                const clientSlot = document.createElement('div');
+                clientSlot.className = 'client-logo';
+                
+                const wrapper = document.createElement('div');
+                wrapper.className = 'logo-wrapper';
+                
+                // Add all possible logos for this slot
+                const logos = clientGroups[i] || clientGroups[0]; // Fallback to first group
+                logos.forEach((client, index) => {
+                    const logoItem = document.createElement('div');
+                    logoItem.className = 'logo-item' + (index === 0 ? ' active' : '');
+                    
+                    const img = document.createElement('img');
+                    img.src = client.logo;
+                    img.alt = client.name;
+                    
+                    const name = document.createElement('span');
+                    name.className = 'client-name';
+                    name.textContent = client.name;
+                    
+                    logoItem.appendChild(img);
+                    logoItem.appendChild(name);
+                    wrapper.appendChild(logoItem);
+                });
+                
+                clientSlot.appendChild(wrapper);
+                clientsGrid.appendChild(clientSlot);
+                
+                // Start rotation for this slot
+                if (logos.length > 1) {
+                    startClientRotation(wrapper, logos.length);
+                }
+            }
+        }
+
+        // Start client logo rotation
+        function startClientRotation(wrapper, count) {
+            let currentIndex = 0;
+            
+            const interval = setInterval(() => {
+                const items = wrapper.querySelectorAll('.logo-item');
+                items[currentIndex].classList.remove('active');
+                currentIndex = (currentIndex + 1) % count;
+                items[currentIndex].classList.add('active');
+            }, 3000 + Math.random() * 2000); // Random interval between 3-5 seconds
+            
+            clientRotationIntervals.push(interval);
+        }
+
+        // Load projects
+        function loadProjects() {
+            const container = document.getElementById('projectsContainer');
+            
+            siteData.projects.forEach((project, index) => {
+                const projectEl = document.createElement('div');
+                projectEl.className = 'project';
+                projectEl.style.animationDelay = `${0.1 * (index + 1)}s`;
+                
+                const img = document.createElement('img');
+                img.src = project.image;
+                img.alt = project.name || '';
+                
+                projectEl.appendChild(img);
+                container.appendChild(projectEl);
+            });
+        }
+
+        // Toggle accordion
+        function toggleAccordion(element, type) {
+            const accordions = document.querySelectorAll('.accordion');
+            const isExpanding = !element.classList.contains('expanded');
+            
+            // Close all accordions first
+            accordions.forEach(acc => {
+                if (acc !== element) {
+                    acc.classList.remove('expanded');
+                    acc.querySelector('.accordion-content').style.maxHeight = '0';
+                }
+            });
+
+            // Toggle current accordion
+            if (isExpanding) {
+                element.classList.add('expanded');
+                const content = element.querySelector('.accordion-content');
+                content.style.maxHeight = '300px';
+                activeAccordion = element;
+            } else {
+                element.classList.remove('expanded');
+                element.querySelector('.accordion-content').style.maxHeight = '0';
+                activeAccordion = null;
+            }
+        }
+
+        // Initialize on load
+        window.addEventListener('load', () => {
+            loadSiteData();
+            initializeGradualBlur();
+        });
+
+        // Initialize gradual blur effect
+        function initializeGradualBlur() {
+            const blurContainer = document.getElementById('gradualBlur');
+            if (!blurContainer) return;
+
+            const divCount = 6;
+            const blurInner = document.createElement('div');
+            blurInner.className = 'gradual-blur-inner';
+
+            // Create blur layers with exponential progression
+            for (let i = 1; i <= divCount; i++) {
+                const layer = document.createElement('div');
+                layer.className = 'blur-layer';
+                
+                // Calculate blur strength exponentially
+                const progress = i / divCount;
+                const blurValue = Math.pow(2, progress * 3) * 0.5; // Exponential blur from 0 to ~4px
+                
+                // Calculate mask gradient positions
+                const increment = 100 / divCount;
+                const p1 = Math.round((increment * i - increment) * 10) / 10;
+                const p2 = Math.round(increment * i * 10) / 10;
+                const p3 = Math.round((increment * i + increment) * 10) / 10;
+                const p4 = Math.round((increment * i + increment * 2) * 10) / 10;
+                
+                let gradient = `transparent ${p1}%, black ${p2}%`;
+                if (p3 <= 100) gradient += `, black ${p3}%`;
+                if (p4 <= 100) gradient += `, transparent ${p4}%`;
+                
+                // Apply styles
+                layer.style.maskImage = `linear-gradient(to bottom, ${gradient})`;
+                layer.style.webkitMaskImage = `linear-gradient(to bottom, ${gradient})`;
+                layer.style.backdropFilter = `blur(${blurValue}px)`;
+                layer.style.webkitBackdropFilter = `blur(${blurValue}px)`;
+                
+                blurInner.appendChild(layer);
+            }
+
+            blurContainer.appendChild(blurInner);
+        }
+
+        // Cleanup on unload
+        window.addEventListener('beforeunload', () => {
+            clientRotationIntervals.forEach(interval => clearInterval(interval));
+            if (skillRotationInterval) clearInterval(skillRotationInterval);
+        });
+    </script>
+</body>
+</html>
