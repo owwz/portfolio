@@ -1440,7 +1440,10 @@
                 chars.forEach((char, i) => {
                     const span = document.createElement('span');
                     span.textContent = char;
-                    span.style.display = 'inline-block';
+                    // Only set inline-block for non-space characters to preserve spacing
+                    if (char !== ' ') {
+                        span.style.display = 'inline-block';
+                    }
                     span.dataset.original = char;
                     span.dataset.index = i;
                     this.charElements.push(span);
@@ -1524,7 +1527,6 @@
                 '#mainDescription',
                 '#headerName',
                 '.accordion-title',
-                '.btn',
                 '.mindset-text p',
                 '#aboutContent p'
             ];
