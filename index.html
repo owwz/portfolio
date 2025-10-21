@@ -495,32 +495,46 @@
             padding-bottom: 100px; /* Add padding to ensure last project is visible above blur */
         }
 
+        /* Scroll Reveal Animation Styles (inspired by reactbits.dev) */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .scroll-reveal-scale {
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .scroll-reveal-scale.revealed {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .scroll-reveal-fade {
+            opacity: 0;
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .scroll-reveal-fade.revealed {
+            opacity: 1;
+        }
+
         .project {
             border-radius: 24px;
             overflow: hidden;
             background: #f0f0f0;
             position: relative;
-            animation: fadeInUp 0.6s ease forwards;
-            opacity: 0;
         }
-
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .project:nth-child(1) { animation-delay: 0.1s; }
-        .project:nth-child(2) { animation-delay: 0.2s; }
-        .project:nth-child(3) { animation-delay: 0.3s; }
-        .project:nth-child(4) { animation-delay: 0.4s; }
-        .project:nth-child(5) { animation-delay: 0.5s; }
-        .project:nth-child(6) { animation-delay: 0.6s; }
-        .project:nth-child(7) { animation-delay: 0.7s; }
-        .project:nth-child(8) { animation-delay: 0.8s; }
-        .project:nth-child(9) { animation-delay: 0.9s; }
-        .project:nth-child(10) { animation-delay: 1.0s; }
 
         .project img {
             width: 100%;
@@ -1185,8 +1199,10 @@
 
             siteData.projects.forEach((project, index) => {
                 const projectEl = document.createElement('div');
-                projectEl.className = 'project';
-                projectEl.style.animationDelay = `${0.1 * (index + 1)}s`;
+                projectEl.className = 'project scroll-reveal';
+
+                // Add staggered delay for smooth sequential reveal
+                projectEl.dataset.revealDelay = index * 80; // 80ms between each project
 
                 const img = document.createElement('img');
                 img.src = project.image;
@@ -1198,6 +1214,12 @@
                 projectEl.appendChild(img);
                 container.appendChild(projectEl);
             });
+
+            // Re-initialize scroll observer for new projects
+            if (scrollObserver) {
+                const newProjects = document.querySelectorAll('.project.scroll-reveal');
+                newProjects.forEach(project => scrollObserver.observe(project));
+            }
         }
 
         // Open project modal
@@ -1307,12 +1329,6 @@
             }
         }
 
-        // Initialize on load
-        window.addEventListener('load', () => {
-            loadSiteData();
-            initializeGradualBlur();
-        });
-
         // Initialize gradual blur effect (inspired by reactbits.dev)
         function initializeGradualBlur() {
             const blurContainer = document.getElementById('gradualBlur');
@@ -1359,10 +1375,76 @@
             }
         }
 
+        // Scroll Reveal Animation (inspired by reactbits.dev)
+        let scrollObserver = null;
+
+        function initScrollReveal() {
+            // Create Intersection Observer for scroll reveal animations
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px 0px -10% 0px', // Trigger slightly before element is fully visible
+                threshold: 0.1 // Trigger when 10% of element is visible
+            };
+
+            scrollObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        // Add delay based on order for staggered effect
+                        const delay = entry.target.dataset.revealDelay || 0;
+
+                        setTimeout(() => {
+                            entry.target.classList.add('revealed');
+                        }, delay);
+
+                        // Optional: Unobserve after revealing (one-time animation)
+                        scrollObserver.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all elements with scroll reveal classes
+            const revealElements = document.querySelectorAll('.scroll-reveal, .scroll-reveal-scale, .scroll-reveal-fade');
+            revealElements.forEach((el) => {
+                scrollObserver.observe(el);
+            });
+        }
+
+        // Add scroll reveal to elements on load
+        function addScrollRevealToElements() {
+            // Add to main card
+            const mainCard = document.querySelector('.main-card');
+            if (mainCard) {
+                mainCard.classList.add('scroll-reveal-scale');
+                mainCard.dataset.revealDelay = 0;
+            }
+
+            // Add to accordions
+            const accordions = document.querySelectorAll('.accordion');
+            accordions.forEach((accordion, index) => {
+                accordion.classList.add('scroll-reveal-fade');
+                accordion.dataset.revealDelay = index * 100; // Stagger by 100ms
+            });
+
+            // Initialize observer
+            initScrollReveal();
+        }
+
+        // Initialize on load
+        window.addEventListener('load', () => {
+            loadSiteData();
+            initializeGradualBlur();
+
+            // Delay scroll reveal slightly to let content load
+            setTimeout(() => {
+                addScrollRevealToElements();
+            }, 100);
+        });
+
         // Cleanup on unload
         window.addEventListener('beforeunload', () => {
             clientRotationIntervals.forEach(interval => clearInterval(interval));
             if (skillRotationInterval) clearInterval(skillRotationInterval);
+            if (scrollObserver) scrollObserver.disconnect();
         });
     </script>
 </body>
