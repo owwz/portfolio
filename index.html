@@ -40,23 +40,46 @@
             box-sizing: border-box;
         }
 
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
-        
+        @import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&display=swap');
+
+        /* PP Neue Montreal Font Family */
         @font-face {
             font-family: 'PP Neue Montreal';
             src: url('fonts/PPNeueMontreal-Book.woff2') format('woff2'),
-                 url('fonts/PPNeueMontreal-Book.woff') format('woff'),
-                 url('fonts/PPNeueMontreal-Book.ttf') format('truetype');
+                 url('fonts/PPNeueMontreal-Book.woff') format('woff');
             font-weight: 400;
             font-style: normal;
+            font-display: swap;
         }
-        
+
+        @font-face {
+            font-family: 'PP Neue Montreal';
+            src: url('fonts/PPNeueMontreal-Medium.woff2') format('woff2'),
+                 url('fonts/PPNeueMontreal-Medium.woff') format('woff');
+            font-weight: 500;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'PP Neue Montreal';
+            src: url('fonts/PPNeueMontreal-Bold.woff2') format('woff2'),
+                 url('fonts/PPNeueMontreal-Bold.woff') format('woff');
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+        }
+
         body {
             font-family: 'PP Neue Montreal', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: #f7f6f6;
             color: #1f1f1f;
             overflow: hidden;
             height: 100vh;
+        }
+
+        code, pre, .mono {
+            font-family: 'Geist Mono', 'Courier New', monospace;
         }
 
         .container {
@@ -385,7 +408,7 @@
             align-items: center;
             gap: 8px;
             opacity: 0;
-            transition: opacity 0.8s ease-in-out;
+            transition: opacity 0.6s ease-in-out;
         }
 
         .logo-item.active {
@@ -398,14 +421,7 @@
             filter: grayscale(100%);
             opacity: 0.7;
             object-fit: contain;
-        }
-
-        .client-name {
-            font-size: 10px;
-            color: #666;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            white-space: nowrap;
+            transition: opacity 0.6s ease-in-out;
         }
 
         /* Mindset content */
@@ -495,32 +511,46 @@
             padding-bottom: 100px; /* Add padding to ensure last project is visible above blur */
         }
 
+        /* Scroll Reveal Animation Styles (inspired by reactbits.dev) */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .scroll-reveal-scale {
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .scroll-reveal-scale.revealed {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .scroll-reveal-fade {
+            opacity: 0;
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .scroll-reveal-fade.revealed {
+            opacity: 1;
+        }
+
         .project {
             border-radius: 24px;
             overflow: hidden;
             background: #f0f0f0;
             position: relative;
-            animation: fadeInUp 0.6s ease forwards;
-            opacity: 0;
         }
-
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .project:nth-child(1) { animation-delay: 0.1s; }
-        .project:nth-child(2) { animation-delay: 0.2s; }
-        .project:nth-child(3) { animation-delay: 0.3s; }
-        .project:nth-child(4) { animation-delay: 0.4s; }
-        .project:nth-child(5) { animation-delay: 0.5s; }
-        .project:nth-child(6) { animation-delay: 0.6s; }
-        .project:nth-child(7) { animation-delay: 0.7s; }
-        .project:nth-child(8) { animation-delay: 0.8s; }
-        .project:nth-child(9) { animation-delay: 0.9s; }
-        .project:nth-child(10) { animation-delay: 1.0s; }
 
         .project img {
             width: 100%;
@@ -1141,17 +1171,12 @@
                 logos.forEach((client, index) => {
                     const logoItem = document.createElement('div');
                     logoItem.className = 'logo-item' + (index === 0 ? ' active' : '');
-                    
+
                     const img = document.createElement('img');
                     img.src = client.logo;
                     img.alt = client.name;
-                    
-                    const name = document.createElement('span');
-                    name.className = 'client-name';
-                    name.textContent = client.name;
-                    
+
                     logoItem.appendChild(img);
-                    logoItem.appendChild(name);
                     wrapper.appendChild(logoItem);
                 });
                 
@@ -1186,7 +1211,6 @@
             siteData.projects.forEach((project, index) => {
                 const projectEl = document.createElement('div');
                 projectEl.className = 'project';
-                projectEl.style.animationDelay = `${0.1 * (index + 1)}s`;
 
                 const img = document.createElement('img');
                 img.src = project.image;
@@ -1307,12 +1331,6 @@
             }
         }
 
-        // Initialize on load
-        window.addEventListener('load', () => {
-            loadSiteData();
-            initializeGradualBlur();
-        });
-
         // Initialize gradual blur effect (inspired by reactbits.dev)
         function initializeGradualBlur() {
             const blurContainer = document.getElementById('gradualBlur');
@@ -1359,10 +1377,156 @@
             }
         }
 
+        // Scroll Reveal Animation (inspired by reactbits.dev)
+        let scrollObserver = null;
+
+        function initScrollReveal() {
+            // Create Intersection Observer for scroll reveal animations
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px 0px -10% 0px', // Trigger slightly before element is fully visible
+                threshold: 0.1 // Trigger when 10% of element is visible
+            };
+
+            scrollObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        // Add delay based on order for staggered effect
+                        const delay = entry.target.dataset.revealDelay || 0;
+
+                        setTimeout(() => {
+                            entry.target.classList.add('revealed');
+                        }, delay);
+
+                        // Optional: Unobserve after revealing (one-time animation)
+                        scrollObserver.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all elements with scroll reveal classes
+            const revealElements = document.querySelectorAll('.scroll-reveal, .scroll-reveal-scale, .scroll-reveal-fade');
+            revealElements.forEach((el) => {
+                scrollObserver.observe(el);
+            });
+        }
+
+        // Scrambled Text Animation (inspired by reactbits.dev)
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()';
+
+        function scrambleText(element, finalText, options = {}) {
+            const {
+                duration = 2000,
+                scrambleSpeed = 50,
+                delay = 0
+            } = options;
+
+            const totalFrames = Math.floor(duration / scrambleSpeed);
+            let frame = 0;
+
+            setTimeout(() => {
+                const interval = setInterval(() => {
+                    let scrambledText = '';
+
+                    for (let i = 0; i < finalText.length; i++) {
+                        const progress = frame / totalFrames;
+                        const charProgress = (i / finalText.length);
+
+                        // Each character resolves based on overall progress
+                        if (progress > charProgress) {
+                            // Character is revealed
+                            scrambledText += finalText[i];
+                        } else if (finalText[i] === ' ') {
+                            // Keep spaces as spaces
+                            scrambledText += ' ';
+                        } else {
+                            // Still scrambling
+                            scrambledText += characters[Math.floor(Math.random() * characters.length)];
+                        }
+                    }
+
+                    element.textContent = scrambledText;
+                    frame++;
+
+                    if (frame > totalFrames) {
+                        clearInterval(interval);
+                        element.textContent = finalText;
+                    }
+                }, scrambleSpeed);
+            }, delay);
+        }
+
+        function applyScrambleToElement(element, delay = 0) {
+            const originalText = element.textContent;
+            if (originalText && originalText.trim().length > 0) {
+                element.textContent = ''; // Start with empty
+                scrambleText(element, originalText, { delay });
+            }
+        }
+
+        function initScrambleAnimations() {
+            // Scramble heading
+            const heading = document.getElementById('mainHeading');
+            if (heading) applyScrambleToElement(heading, 300);
+
+            // Scramble description
+            const description = document.getElementById('mainDescription');
+            if (description) applyScrambleToElement(description, 500);
+
+            // Scramble header name
+            const headerName = document.getElementById('headerName');
+            if (headerName) applyScrambleToElement(headerName, 0);
+
+            // Scramble accordion titles
+            const accordionTitles = document.querySelectorAll('.accordion-title');
+            accordionTitles.forEach((title, index) => {
+                applyScrambleToElement(title, 700 + (index * 100));
+            });
+
+            // Scramble button text
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach((btn, index) => {
+                applyScrambleToElement(btn, 600 + (index * 100));
+            });
+        }
+
+        // Add scroll reveal to elements on load
+        function addScrollRevealToElements() {
+            // Add to main card
+            const mainCard = document.querySelector('.main-card');
+            if (mainCard) {
+                mainCard.classList.add('scroll-reveal-scale');
+                mainCard.dataset.revealDelay = 0;
+            }
+
+            // Note: Accordions removed from scroll reveal to fix opacity issue
+            // They are always visible on the left panel, so no scroll reveal needed
+
+            // Initialize observer
+            initScrollReveal();
+        }
+
+        // Initialize on load
+        window.addEventListener('load', () => {
+            loadSiteData();
+            initializeGradualBlur();
+
+            // Delay scroll reveal slightly to let content load
+            setTimeout(() => {
+                addScrollRevealToElements();
+
+                // Initialize scramble animations after content is loaded
+                setTimeout(() => {
+                    initScrambleAnimations();
+                }, 200);
+            }, 100);
+        });
+
         // Cleanup on unload
         window.addEventListener('beforeunload', () => {
             clientRotationIntervals.forEach(interval => clearInterval(interval));
             if (skillRotationInterval) clearInterval(skillRotationInterval);
+            if (scrollObserver) scrollObserver.disconnect();
         });
     </script>
 </body>
